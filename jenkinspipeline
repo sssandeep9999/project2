@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "$PATH:/usr/share/maven/bin"
+    }
+    stages {
+        stage('git checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'git', url: 'https://github.com/sssandeep9999/project2_9999.git'
+            }
+        }
+        stage('Maven') {
+            steps {
+                sh "mvn --version"
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+            withSonarQubeEnv('Soner-Server-8.9.10') {
+            sh "mvn sonar:sonar"
+            }
+            }
+        }
+        stage('Artifact Upload') {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: '01-maven-web-app', classifier: '', file: 'target/01-maven-web-app.war', type: 'war']], credentialsId: 'NEXUS-CREDENTIALS', groupId: 'SATYASAISANDEEPGROUPOFPROJECTS', nexusUrl: '13.232.161.44:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'SatyaSaiSandeep901-project-repo', version: '1.0-SNAPSHOT'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'docker --version'
+                sh 'sudo docker build -t satyasandeep901/mavenwebapp:1 .'
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerUP', variable: 'dockerUP')]) {
+                sh 'sudo docker login -u satyasandeep901 -p ${dockerUP}'
+}
+                sh 'sudo docker push satyasandeep901/mavenwebapp:1'
+            }
+          }
+        stage('Deploy') {
+            steps {
+                kubernetesDeploy configs: 'SAMPLE-DEPLOYMENT.yaml', kubeConfig: [path: ''], kubeconfigId: 'kubernetes', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+            }
+        }
+    }
+}
