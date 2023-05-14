@@ -1,8 +1,6 @@
 <html>
 <body>
-<h1><font color='red'>Welcome to Ashok IT..!!<font></h1>
-<h2>Learn Here.. Lead Anywhere..!! </h2>
-
-<a href="https://ashokitech.com/online-training-schedules">Click Here To See Training Schedules</a>
+<h1><font color='red'>Hi Welcome to web application..!!<font></h1>
+<h2>This is my jenkins CICD pipeline project2 to deploy code in kubernetes Environment..!! </h2>
 </body>
 </html>
