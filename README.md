@@ -1,2 +1,1 @@
-# Medilab Preclinic Application Automation
-#enabling automation
+# Medilab Preclinic Application CICD Project
