@@ -1,5 +1,4 @@
-FROM tomcat:8.5.37-jre8
+FROM java:8
 MAINTAINER sandeep
-COPY target/01-maven-web-app*.war /usr/local/tomcat/webapps
-EXPOSE 8080
-CMD ["catalina.sh", "run"]
+COPY medilab-morning-preclinic-war-0.0.1-SNAPSHOT.war /opt/medilab-preclinic/
+CMD [ "java","-jar","/opt/medilab-preclinic/medilab-morning-preclinic-war-0.0.1-SNAPSHOT.war" ]

@@ -18,6 +18,6 @@ spec:
     spec:
        containers:
        - name: myjavaapp-container
-         image: satyasandeep901/myloginimage31jul22:3
+         image: satyasandeep901/medilabproject:1
          ports:
           - containerPort: 8080

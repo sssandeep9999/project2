@@ -28,13 +28,13 @@ pipeline {
         }
         stage('Artifact Upload') {
             steps {
-                nexusArtifactUploader artifacts: [[artifactId: '01-maven-web-app', classifier: '', file: 'target/01-maven-web-app.war', type: 'war']], credentialsId: 'NEXUS-CREDENTIALS', groupId: 'SATYASAISANDEEPGROUPOFPROJECTS', nexusUrl: '13.232.161.44:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'SatyaSaiSandeep901-project-repo', version: '1.0-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'medilab-web-app', classifier: '', file: 'target/medilab-morning-preclinic-war-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'NEXUS-CREDENTIALS', groupId: 'SATYASAISANDEEPGROUPOFPROJECTS', nexusUrl: '13.232.161.44:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'SatyaSaiSandeep901-project-repo', version: '1.0-SNAPSHOT'
             }
         }
         stage('Docker Build') {
             steps {
                 sh 'docker --version'
-                sh 'sudo docker build -t satyasandeep901/mavenwebapp:1 .'
+                sh 'sudo docker build -t satyasandeep901/medilabproject:1 .'
             }
         }
         stage('Docker Push') {
@@ -42,7 +42,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'dockerUP', variable: 'dockerUP')]) {
                 sh 'sudo docker login -u satyasandeep901 -p ${dockerUP}'
 }
-                sh 'sudo docker push satyasandeep901/mavenwebapp:1'
+                sh 'sudo docker push satyasandeep901/medilabproject:1'
             }
           }
         stage('Deploy') {
